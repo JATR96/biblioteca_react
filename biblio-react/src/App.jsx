@@ -10,6 +10,8 @@ import ListadoLibros from "./libros/ListadoLibros";
 
 import AgregarLibro from "./libros/AgregarLibro";
 
+import EditarLibro from "./libros/EditarLibro";
+
 function App() {
 
   return (
@@ -42,6 +44,12 @@ function App() {
           <Route
             path="/agregar"
             element={<AgregarLibro />}
+          />
+
+          {/* Ruta editar */}
+          <Route
+            path="/editar/:id"
+            element={<EditarLibro />}
           />
 
         </Routes>

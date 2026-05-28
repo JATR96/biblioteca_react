@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { Link } from "react-router-dom";
+
 import { listarLibros } from "../api/libros";
 
 
@@ -8,14 +10,14 @@ function ListadoLibros() {
     // =====================================================
     // Estado del listado de libros
     // =====================================================
-    // [NUEVO]
+
     const [libros, setLibros] = useState([]);
 
 
     // =====================================================
     // Obtener libros del backend
     // =====================================================
-    // [NUEVO]
+
     async function cargarLibros() {
 
         try {
@@ -70,6 +72,7 @@ function ListadoLibros() {
                             <th>Título</th>
                             <th>Autor</th>
                             <th>Rating</th>
+                            <th>Acciones</th>
                         </tr>
 
                     </thead>
@@ -87,6 +90,21 @@ function ListadoLibros() {
                                 <td>{libro.autor}</td>
 
                                 <td>{libro.rating}</td>
+
+                                {/* Botón editar */}
+
+                                <td>
+
+                                    <Link
+                                        to={`/editar/${libro.id}`}
+                                        className="btn btn-primary btn-sm"
+                                    >
+                                        <i className="bi bi-pencil-square me-2"></i>
+
+                                        Editar
+                                    </Link>
+
+                                </td>
 
                             </tr>
                         ))}
