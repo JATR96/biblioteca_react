@@ -179,6 +179,34 @@ export async function actualizarLibro(id, libro) {
 }
 
 // =====================================================
+// Eliminar libro
+// =====================================================
+
+export async function eliminarLibro(id) {
+
+    try {
+
+        // =============================================
+        // Petición DELETE
+        // =============================================
+        const respuesta = await axios.delete(
+            `${urlBase}/${id}`
+        );
+
+        return respuesta.data;
+
+    } catch (error) {
+
+        console.error(
+            "Error al eliminar libro:",
+            error
+        );
+
+        throw error;
+    }
+}
+
+// =====================================================
 // Exportaciones
 // =====================================================
 // Exportamos la URL y la instancia de Axios
