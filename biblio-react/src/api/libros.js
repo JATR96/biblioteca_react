@@ -102,6 +102,31 @@ export async function crearLibro(libro) {
 }
 
 // =====================================================
+// Obtener libro por ID
+// =====================================================
+
+export async function obtenerLibroPorId(id) {
+
+    try {
+
+        const resultado = await axios.get(
+            `${urlBase}/${id}`
+        );
+
+        return resultado.data;
+
+    } catch (error) {
+
+        console.error(
+            "Error al obtener libro por id:",
+            error
+        );
+
+        throw error;
+    }
+}
+
+// =====================================================
 // Exportaciones
 // =====================================================
 // Exportamos la URL y la instancia de Axios
