@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
-import { listarLibros } from "../api/libros";
+import { listarLibros, eliminarLibro } from "../api/libros";
 
 
 function ListadoLibros() {
@@ -35,11 +35,63 @@ function ListadoLibros() {
         }
     }
 
+    // =====================================================
+    // Eliminar libro
+    // =====================================================
+
+    async function eliminar(id) {
+
+        // =============================================
+        // Confirmación básica
+        // =============================================
+        const confirmar = confirm(
+            "¿Desea eliminar este libro?"
+        );
+
+        // =============================================
+        // Cancelar eliminación
+        // =============================================
+        if (!confirmar) {
+
+            return;
+        }
+
+        try {
+
+            // =============================================
+            // Consumir API DELETE
+            // =============================================
+            await eliminarLibro(id);
+
+            // =============================================
+            // Refrescar listado
+            // =============================================
+            await cargarLibros();
+
+            // =============================================
+            // Mostrar mensaje
+            // =============================================
+            alert(
+                "Libro eliminado correctamente"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Error al eliminar libro:",
+                error
+            );
+
+            alert(
+                "No se pudo eliminar el libro"
+            );
+        }
+    }
 
     // =====================================================
     // Ejecutar carga inicial
     // =====================================================
-    // [NUEVO]
+
     useEffect(() => {
 
         cargarLibros();
@@ -103,6 +155,17 @@ function ListadoLibros() {
 
                                         Editar
                                     </Link>
+
+                                    {/* Botón eliminar */}
+
+                                    <button
+                                        className="btn btn-danger btn-sm"
+                                        onClick={() => eliminar(libro.id)}
+                                    >
+                                        <i className="bi bi-trash me-2"></i>
+
+                                        Eliminar
+                                    </button>
 
                                 </td>
 
