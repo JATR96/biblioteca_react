@@ -1,4 +1,107 @@
+import { useEffect, useState } from "react";
+
+import {
+    useNavigate,
+    useParams
+} from "react-router-dom";
+
+import {
+    obtenerLibroPorId
+} from "../api/libros";
+
+
 function EditarLibro() {
+
+    // =====================================================
+    // Navegación programática
+    // =====================================================
+
+    const navigate = useNavigate();
+
+
+    // =====================================================
+    // Obtener id desde la URL
+    // =====================================================
+
+    const { id } = useParams();
+
+
+    // =====================================================
+    // Estado del formulario
+    // =====================================================
+
+    const [libro, setLibro] = useState({
+        titulo: "",
+        autor: "",
+        rating: 1
+    });
+
+
+    // =====================================================
+    // Cargar libro desde backend
+    // =====================================================
+
+    async function cargarLibro() {
+
+        try {
+
+            const datos = await obtenerLibroPorId(id);
+
+            setLibro(datos);
+
+        } catch (error) {
+
+            console.error(
+                "Error al cargar libro:",
+                error
+            );
+
+            alert(
+                "No se pudo cargar el libro"
+            );
+
+            navigate("/");
+        }
+    }
+
+
+    // =====================================================
+    // Ejecutar carga inicial
+    // =====================================================
+
+    useEffect(() => {
+
+        cargarLibro();
+
+    }, []);
+
+
+    // =====================================================
+    // Actualizar valores del formulario
+    // =====================================================
+
+    function cambiarValor(evento) {
+
+        const { name, value } = evento.target;
+
+        setLibro({
+            ...libro,
+            [name]: name === "rating"
+                ? parseInt(value)
+                : value
+        });
+    }
+
+
+    // =====================================================
+    // Cancelar edición
+    // =====================================================
+
+    function cancelar() {
+
+        navigate("/");
+    }
+
 
     return (
 
@@ -24,8 +127,11 @@ function EditarLibro() {
 
                     <input
                         type="text"
+                        name="titulo"
                         className="form-control"
                         placeholder="Ingrese el título"
+                        value={libro.titulo}
+                        onChange={cambiarValor}
                     />
 
                 </div>
@@ -39,8 +145,11 @@ function EditarLibro() {
 
                     <input
                         type="text"
+                        name="autor"
                         className="form-control"
                         placeholder="Ingrese el autor"
+                        value={libro.autor}
+                        onChange={cambiarValor}
                     />
 
                 </div>
@@ -54,8 +163,13 @@ function EditarLibro() {
 
                     <input
                         type="number"
+                        name="rating"
                         className="form-control"
+                        min="1"
+                        max="5"
                         placeholder="Ingrese rating de 1 a 5"
+                        value={libro.rating}
+                        onChange={cambiarValor}
                     />
 
                 </div>
@@ -75,6 +189,7 @@ function EditarLibro() {
                     <button
                         type="button"
                         className="btn btn-secondary"
+                        onClick={cancelar}
                     >
                         <i className="bi bi-x-circle me-2"></i>
 
