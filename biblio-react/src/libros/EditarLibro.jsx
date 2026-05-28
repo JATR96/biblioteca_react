@@ -6,7 +6,8 @@ import {
 } from "react-router-dom";
 
 import {
-    obtenerLibroPorId
+    obtenerLibroPorId,
+    actualizarLibro
 } from "../api/libros";
 
 
@@ -92,6 +93,45 @@ function EditarLibro() {
         });
     }
 
+    // =====================================================
+    // Guardar cambios del libro
+    // =====================================================
+
+    async function guardarCambios(evento) {
+
+        evento.preventDefault();
+
+        try {
+
+            // =============================================
+            // Consumir API PUT
+            // =============================================
+            await actualizarLibro(id, libro);
+
+            // =============================================
+            // Mostrar mensaje
+            // =============================================
+            alert(
+                "Libro actualizado correctamente"
+            );
+
+            // =============================================
+            // Regresar al listado
+            // =============================================
+            navigate("/");
+
+        } catch (error) {
+
+            console.error(
+                "Error al actualizar libro:",
+                error
+            );
+
+            alert(
+                "No se pudo actualizar el libro"
+            );
+        }
+    }
 
     // =====================================================
     // Cancelar edición
@@ -116,7 +156,10 @@ function EditarLibro() {
             </h2>
 
             {/* Formulario */}
-            <form className="mt-4">
+            <form
+                className="mt-4"
+                onSubmit={guardarCambios}
+            >
 
                 {/* Título */}
                 <div className="mb-3">
@@ -178,7 +221,7 @@ function EditarLibro() {
                 <div className="d-flex gap-2">
 
                     <button
-                        type="button"
+                        type="submit"
                         className="btn btn-primary"
                     >
                         <i className="bi bi-floppy me-2"></i>

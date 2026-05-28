@@ -127,6 +127,58 @@ export async function obtenerLibroPorId(id) {
 }
 
 // =====================================================
+// Actualizar libro
+// =====================================================
+
+export async function actualizarLibro(id, libro) {
+
+    try {
+
+        // =============================================
+        // Validaciones básicas
+        // =============================================
+        if (
+            !libro.titulo ||
+            !libro.autor
+        ) {
+
+            throw new Error(
+                "Título y autor son obligatorios"
+            );
+        }
+
+        if (
+            libro.rating < 1 ||
+            libro.rating > 5
+        ) {
+
+            throw new Error(
+                "El rating debe estar entre 1 y 5"
+            );
+        }
+
+        // =============================================
+        // Petición PUT
+        // =============================================
+        const respuesta = await axios.put(
+            `${urlBase}/${id}`,
+            libro
+        );
+
+        return respuesta.data;
+
+    } catch (error) {
+
+        console.error(
+            "Error al actualizar libro:",
+            error
+        );
+
+        throw error;
+    }
+}
+
+// =====================================================
 // Exportaciones
 // =====================================================
 // Exportamos la URL y la instancia de Axios
